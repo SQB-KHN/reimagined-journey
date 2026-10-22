@@ -10,7 +10,7 @@ type BuyerEnquiry = {
 };
 const empty:BuyerEnquiry={name:"",company:"",email:"",phone:"",category:"",variety:"",processing:"",quantity:"",unit:"MT",destination:"",packaging:"",moisture:"",broken:"",timeline:"",terms:"",notes:""};
 const safe=(value:string)=>value.trim().replace(/[\r\n]+/g," ").slice(0,3000);
-export function formatEnquiry(q:BuyerEnquiry){
+function formatEnquiry(q:BuyerEnquiry){
   const rows:[string,string][]=[
     ["Buyer name",q.name],["Company",q.company],["Email",q.email],["Phone",q.phone],
     ["Rice category",q.category],["Variety / grain identity",q.variety],["Processing",q.processing],
