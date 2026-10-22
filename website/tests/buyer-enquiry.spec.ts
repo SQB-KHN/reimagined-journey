@@ -35,3 +35,4 @@ test("primary routes render and mobile layout does not overflow",async({page,isM
   if(isMobile){const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+1);expect(overflow, "overflow at "+path).toBeFalsy();}
  }
 });
+test("enquiry delivery fails closed until approved",async({request})=>{const r=await request.post("/api/enquiries",{data:{}});expect(r.status()).toBe(503);const data=await r.json();expect(data.ok).toBe(false);});
