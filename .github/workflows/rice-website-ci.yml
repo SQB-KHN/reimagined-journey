@@ -1,0 +1,28 @@
+name: Rice website build and browser checks
+on:
+  push:
+    branches: [feat/rice-trade-website-foundation]
+    paths: ['website/**', '.github/workflows/rice-website-ci.yml']
+  pull_request:
+    paths: ['website/**', '.github/workflows/rice-website-ci.yml']
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rice-website-playwright-results
+          path: website/test-results/
+          retention-days: 7
