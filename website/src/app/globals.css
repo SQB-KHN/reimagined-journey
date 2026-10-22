@@ -61,3 +61,6 @@
 .enquiry-panel .solid-link{margin-top:12px}
 @media(max-width:900px){.catalogue-grid{grid-template-columns:1fr 1fr}.detail-columns{grid-template-columns:1fr;gap:40px}}
 @media(max-width:600px){.catalogue-grid{grid-template-columns:1fr}.catalogue-art{height:190px}.spec-table th,.spec-table td{font-size:12px}}
+
+/* Structured buyer enquiry */
+.enquiry-form{max-width:970px;gap:25px}.enquiry-form fieldset{margin:0;padding:25px 0;border:0;border-top:1px solid var(--line);min-width:0;display:grid;gap:20px}.enquiry-form legend{font-weight:700;font-size:14px;letter-spacing:1px;padding:15px 12px 15px 0}.form-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.enquiry-form select{font:inherit;background:#fffdf8;border:1px solid #acae9f;padding:15px;color:var(--ink);min-width:0;width:100%}.enquiry-form input,.enquiry-form textarea{min-width:0;width:100%}.draft-section{margin-top:60px;background:#e5e8dc;padding:30px;max-width:970px}.draft-section h2{font:normal 36px Georgia,serif}.draft-section textarea{width:100%;padding:20px;background:#fffdf8;color:var(--ink);border:1px solid #a4ae9c;font:13px/1.6 monospace}.draft-section button{background:var(--ink);color:white;padding:16px 20px;border:0;cursor:pointer;margin-top:16px}.draft-section p{line-height:1.6}@media(max-width:600px){.form-two{grid-template-columns:1fr}.draft-section{padding:18px}}
