@@ -7,7 +7,8 @@ const required:Key[]=["name","company","email","category","variety","quantity","
 const limits:Partial<Record<Key,number>>={name:100,company:150,email:200,phone:35,category:80,variety:120,processing:60,quantity:30,unit:12,destination:160,packaging:120,moisture:20,broken:20,timeline:20,terms:100,notes:3000};
 function response(error:string,status:number){return NextResponse.json({ok:false,error},{status,headers:{"Cache-Control":"no-store"}})}
 export async function POST(req:NextRequest){
-  if(process.env.ENABLE_ENQUIRY_DELIVERY!=="true")return response("Online delivery is disabled pending security and privacy approval. Copy your draft instead.",503);\n  const apiKey=process.env.RESEND_API_KEY,from=process.env.ENQUIRY_FROM_EMAIL,to=process.env.ENQUIRY_TO_EMAIL;
+  if(process.env.ENABLE_ENQUIRY_DELIVERY!=="true")return response("Online delivery is disabled pending security and privacy approval. Copy your draft instead.",503);
+  const apiKey=process.env.RESEND_API_KEY,from=process.env.ENQUIRY_FROM_EMAIL,to=process.env.ENQUIRY_TO_EMAIL;
   if(!apiKey||!from||!to)return response("Online delivery is not configured. Copy your draft instead.",503);
   const origin=req.headers.get("origin");
   if(origin){try{if(new URL(origin).origin!==req.nextUrl.origin)return response("Invalid origin.",403)}catch{return response("Invalid origin.",403)}}
