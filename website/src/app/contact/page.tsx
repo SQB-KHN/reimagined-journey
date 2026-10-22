@@ -28,10 +28,10 @@ function EnquiryForm(){
   const initial=riceProfiles.some(p=>p.name===requested)?requested:"";
   const [q,setQ]=useState<BuyerEnquiry>({...empty,category:initial});
   const [draft,setDraft]=useState("");
-  const [copyStatus,setCopyStatus]=useState("");
+  const [copyStatus,setCopyStatus]=useState("");\n  const [delivery,setDelivery]=useState("");\n  const [busy,setBusy]=useState(false);
   function set<K extends keyof BuyerEnquiry>(field:K,value:BuyerEnquiry[K]){setQ(old=>({...old,[field]:value}));setDraft("");setCopyStatus("");}
   function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();setDraft(formatEnquiry(q));setCopyStatus("");}
-  async function copy(){try{await navigator.clipboard.writeText(draft);setCopyStatus("Draft copied to clipboard.");}catch{setCopyStatus("Clipboard unavailable. Select and copy the draft below.");}}
+  async function deliver(){setBusy(true);setDelivery("");try{const r=await fetch("/api/enquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...q,website:""})});const json=await r.json();setDelivery(json.message||json.error||"Delivery not confirmed.");}catch{setDelivery("Delivery not confirmed. Copy the draft instead.");}finally{setBusy(false)}}\n  async function copy(){try{await navigator.clipboard.writeText(draft);setCopyStatus("Draft copied to clipboard.");}catch{setCopyStatus("Clipboard unavailable. Select and copy the draft below.");}}
   return <main className="inner-page">
     <span className="eyebrow">05 / BUYER ENQUIRIES</span><h1 className="page-title">Start with the <em>specification.</em></h1>
     <p className="intro">Build a structured purchasing requirement that a supplier can quote against. This prototype creates a text draft on your device. It does not transmit, save, or email your information.</p>
@@ -60,7 +60,7 @@ function EnquiryForm(){
       <button type="submit">Prepare enquiry draft ↗</button>
       <small>Required fields are marked *. No enquiry is sent. Confirm any applicable export standards and commercial terms before making an offer.</small>
     </form>
-    {draft&&<section className="draft-section" aria-live="polite"><h2>Your enquiry draft</h2><p>Review this draft, then copy it into your preferred email or messaging channel.</p><textarea readOnly aria-label="Generated enquiry draft" value={draft} rows={19}/><button type="button" onClick={copy}>Copy enquiry draft</button><p role="status">{copyStatus}</p></section>}
+    {draft&&<section className="draft-section" aria-live="polite"><h2>Your enquiry draft</h2><p>Review this draft, then copy it into your preferred email or messaging channel.</p><textarea readOnly aria-label="Generated enquiry draft" value={draft} rows={19}/><button type="button" onClick={copy}>Copy enquiry draft</button><button type="button" disabled={busy} onClick={deliver}>{busy?"Checking delivery…":"Send enquiry (when configured)"}</button><p role="status">{delivery}</p><p role="status">{copyStatus}</p></section>}
   </main>;
 }
 export default function Page(){return <Suspense fallback={<main className="inner-page"><p>Loading enquiry form…</p></main>}><EnquiryForm/></Suspense>;}
