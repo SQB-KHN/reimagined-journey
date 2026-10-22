@@ -28,10 +28,13 @@ function EnquiryForm(){
   const initial=riceProfiles.some(p=>p.name===requested)?requested:"";
   const [q,setQ]=useState<BuyerEnquiry>({...empty,category:initial});
   const [draft,setDraft]=useState("");
-  const [copyStatus,setCopyStatus]=useState("");\n  const [delivery,setDelivery]=useState("");\n  const [busy,setBusy]=useState(false);
+  const [copyStatus,setCopyStatus]=useState("");
+  const [delivery,setDelivery]=useState("");
+  const [busy,setBusy]=useState(false);
   function set<K extends keyof BuyerEnquiry>(field:K,value:BuyerEnquiry[K]){setQ(old=>({...old,[field]:value}));setDraft("");setCopyStatus("");}
   function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();setDraft(formatEnquiry(q));setCopyStatus("");}
-  async function deliver(){setBusy(true);setDelivery("");try{const r=await fetch("/api/enquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...q,website:""})});const json=await r.json();setDelivery(json.message||json.error||"Delivery not confirmed.");}catch{setDelivery("Delivery not confirmed. Copy the draft instead.");}finally{setBusy(false)}}\n  async function copy(){try{await navigator.clipboard.writeText(draft);setCopyStatus("Draft copied to clipboard.");}catch{setCopyStatus("Clipboard unavailable. Select and copy the draft below.");}}
+  async function deliver(){setBusy(true);setDelivery("");try{const r=await fetch("/api/enquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...q,website:""})});const json=await r.json();setDelivery(json.message||json.error||"Delivery not confirmed.");}catch{setDelivery("Delivery not confirmed. Copy the draft instead.");}finally{setBusy(false)}}
+  async function copy(){try{await navigator.clipboard.writeText(draft);setCopyStatus("Draft copied to clipboard.");}catch{setCopyStatus("Clipboard unavailable. Select and copy the draft below.");}}
   return <main className="inner-page">
     <span className="eyebrow">05 / BUYER ENQUIRIES</span><h1 className="page-title">Start with the <em>specification.</em></h1>
     <p className="intro">Build a structured purchasing requirement that a supplier can quote against. This prototype creates a text draft on your device. It does not transmit, save, or email your information.</p>
